@@ -40,3 +40,4 @@ build/
 *.a
 mkmf.log
 
+/vendor/bundle

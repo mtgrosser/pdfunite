@@ -1,13 +1,23 @@
 require 'pdfunite/version'
 require 'pathname'
 require 'cocaine'
+require 'logger'
 
 module Pdfunite
   
-  # You can set a custom logger here
-  mattr_accessor :logger
-  
   class << self
+    
+    @@logger = nil
+    
+    # You can set a custom logger here
+    def logger=(logger)
+      @@logger = logger
+    end
+    
+    def logger
+      @@logger
+    end
+    
     #
     # Join PDF files or PDF data
     #
@@ -18,7 +28,7 @@ module Pdfunite
       output = nil
       Dir.mktmpdir do |dir|
         tmpdir = Pathname.new(dir).realpath
-        files = Array.wrap(args).inject({}) do |hsh, arg|
+        files = args.flatten(1).inject({}) do |hsh, arg|
           idx = hsh.size
           data = block_given? ? yield(arg) : File.binread(arg)
           tmpfile = tmpdir.join("#{idx}.pdf")
