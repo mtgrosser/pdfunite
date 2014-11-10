@@ -30,15 +30,8 @@ gem 'pdfunite'
 ```ruby
 # Join existing PDF files
 pdf_data = Pdfunite.join('file1.pdf', 'file2.pdf', 'file3.pdf')
+File.open('joined.pdf', 'wb') { f << pdf_data }
 
 # Join PDF binary data provided by a collection of objects
 pdf_data = Pdfunite.join(objects) { |obj| obj.to_pdf }
 ```
-
-## Contributing
-
-1. Fork it ( https://github.com/[my-github-username]/pdfunite/fork )
-2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Add some feature'`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Create a new Pull Request
