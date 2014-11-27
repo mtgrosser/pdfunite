@@ -18,15 +18,25 @@ class PdfuniteTest < Minitest::Test
   end
   
   def test_setting_custom_logger
-    logfile = root.join('tmp', 'pdfunite.log')
-    logfile.unlink if logfile.exist?
-    assert_equal false, logfile.exist?
-    Pdfunite.logger = Logger.new(logfile.to_s)
-    assert_pdf Pdfunite.join(@files)
-    assert_equal true, logfile.exist?
-    assert logfile.read.size > 0
+    Dir.mktmpdir do |dir|
+      logfile = Pathname.new(dir).join('pdfunite.log')
+      assert_equal false, logfile.exist?
+      Pdfunite.logger = Logger.new(logfile.to_s)
+      assert_pdf Pdfunite.join(@files)
+      assert_equal true, logfile.exist?
+      assert logfile.read.size > 0
+    end
   ensure
     Pdfunite.logger = nil
+  end
+  
+  def test_setting_custom_binary
+    Pdfunite.binary = 'foobar123456123456'
+    assert_raise Pdfunite::BinaryNotFound do
+      Pdfunite.join(@files)
+    end
+  ensure
+    Pdfunite.binary = 'pdfunite'
   end
   
   private
