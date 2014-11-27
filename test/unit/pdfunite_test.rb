@@ -32,7 +32,7 @@ class PdfuniteTest < Minitest::Test
   
   def test_setting_custom_binary
     Pdfunite.binary = 'foobar123456123456'
-    assert_raise Pdfunite::BinaryNotFound do
+    assert_raises Pdfunite::BinaryNotFound do
       Pdfunite.join(@files)
     end
   ensure
