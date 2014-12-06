@@ -6,11 +6,11 @@ require 'pdfunite/version'
 Gem::Specification.new do |spec|
   spec.name          = 'pdfunite'
   spec.version       = Pdfunite::VERSION
-  spec.date          = '2014-11-27'
+  spec.date          = '2014-12-06'
   spec.authors       = ['Matthias Grosser']
   spec.email         = ['mtgrosser@gmx.net']
-  spec.summary       = %q{Merge PDF files with Ruby}
-  spec.description   = %q{Ruby wrapper for the pdfunite command line tool. No Java required}
+  spec.summary       = %q{Merge PDF files with Ruby - no Java required}
+  spec.description   = %q{A Ruby wrapper for the pdfunite command line tool}
   spec.homepage      = 'https://github.com/mtgrosser/pdfunite'
   spec.license       = 'MIT'
 

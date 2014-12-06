@@ -17,6 +17,12 @@ class PdfuniteTest < Minitest::Test
     assert_pdf Pdfunite.join(*@files)
   end
   
+  def test_spaces_are_escaped
+    file = root.join('data', 'name with spaces.pdf')
+    other_file = root.join('data', 'other name with spaces.pdf')
+    assert_pdf Pdfunite.join(file, other_file)
+  end
+  
   def test_setting_custom_logger
     Dir.mktmpdir do |dir|
       logfile = Pathname.new(dir).join('pdfunite.log')
