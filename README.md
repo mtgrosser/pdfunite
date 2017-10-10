@@ -30,7 +30,7 @@ gem 'pdfunite'
 ```ruby
 # Join existing PDF files
 pdf_data = Pdfunite.join('file1.pdf', 'file2.pdf', 'file3.pdf')
-File.open('joined.pdf', 'wb') { f << pdf_data }
+File.open('joined.pdf', 'wb') { |f| f << pdf_data }
 
 # Join PDF binary data provided by a collection of objects
 pdf_data = Pdfunite.join(objects) { |obj| obj.to_pdf }
