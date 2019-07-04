@@ -2,7 +2,7 @@ require_relative '../test_helper'
 
 class PdfuniteTest < Minitest::Test
   def setup
-    @files = (1..4).map { |i| root.join('data', "#{i}.pdf").to_s }
+    @files = (1..4).map { |i| test_file(i).to_s }
   end
   
   def test_joining_existing_pdf_files
@@ -18,9 +18,7 @@ class PdfuniteTest < Minitest::Test
   end
   
   def test_spaces_are_escaped
-    file = root.join('data', 'name with spaces.pdf')
-    other_file = root.join('data', 'other name with spaces.pdf')
-    assert_pdf Pdfunite.join(file, other_file)
+    assert_pdf Pdfunite.join(test_file('name with spaces'), test_file('other name with spaces'))
   end
   
   def test_setting_custom_logger
@@ -45,10 +43,27 @@ class PdfuniteTest < Minitest::Test
     Pdfunite.binary = 'pdfunite'
   end
   
+  def test_joining_broken_pdf
+    Dir.mktmpdir do |dir|
+      logfile = Pathname.new(dir).join('pdfunite.log')
+      Pdfunite.logger = Logger.new(logfile.to_s)
+      assert_nil Pdfunite.join(test_file('broken'), test_file('1'))
+      log = logfile.read
+      assert log.size > 0
+      assert log.include?('ERROR')
+    end
+  ensure
+    Pdfunite.logger = nil
+  end
+
   private
   
   def root
     Pathname.new(File.dirname(__FILE__)).join('..').realpath
+  end
+  
+  def test_file(name)
+    root.join('data', "#{name}.pdf").realpath
   end
   
   def assert_pdf(data)

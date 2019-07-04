@@ -1,7 +1,8 @@
 require 'pdfunite/version'
 require 'tmpdir'
 require 'pathname'
-require 'cocaine'
+require 'open3'
+require 'shellwords'
 require 'logger'
 
 module Pdfunite
@@ -42,8 +43,7 @@ module Pdfunite
       output = nil
       Dir.mktmpdir do |dir|
         tmpdir = Pathname.new(dir).realpath
-        files = args.flatten(1).inject({}) do |hsh, arg|
-          idx = hsh.size
+        files = args.flatten(1).collect.with_index do |arg, idx|
           realpath = if block_given?
             data = yield(arg)
             file = tmpdir.join("#{idx}.pdf")
@@ -52,19 +52,29 @@ module Pdfunite
           else
             Pathname.new(arg).realpath
           end
-          hsh.update(:"f_#{idx}" => realpath.to_s)
+          realpath.to_s
         end
-        cmdline = Cocaine::CommandLine.new(binary, "#{files.keys.map(&:inspect).join(' ')} :outfile", logger: Pdfunite.logger || Logger.new(STDOUT))
         outfile = tmpdir.join('output.pdf')
-        begin
-          cmdline.run(files.merge(outfile: outfile.to_s))
-        rescue Cocaine::CommandNotFoundError
-          raise BinaryNotFound, "The pdfunite executable could not be found at #{binary.inspect}. Check the pdfunite README for more info."
-        end
-        output = outfile.binread
+        cmdline = [binary.to_s, *files, outfile.to_s]
+        output = outfile.binread if run_command(cmdline.shelljoin)
       end
       output
     end
-  end
   
+    private
+  
+    def run_command(cmdline)
+      logger = Pdfunite.logger || Logger.new(STDOUT)
+      stdout, stderr, status = Open3.capture3(cmdline)
+      logger.info "Pdfunite: #{cmdline}"
+      raise unless status.success?
+      true
+    rescue Errno::ENOENT
+      raise BinaryNotFound, "The pdfunite executable could not be found at #{binary.inspect}. Check the pdfunite README for more info."
+    rescue => e
+      logger.error "Pdfunite error: #{e}\ncommand: #{cmdline}\nerror: #{stderr}"
+      false
+    end
+
+  end
 end
