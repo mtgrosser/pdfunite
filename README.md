@@ -1,3 +1,4 @@
+[![Gem Version](https://badge.fury.io/rb/pdfunite.svg)](http://badge.fury.io/rb/pdfunite) [![Build Status](https://travis-ci.org/mtgrosser/pdfunite.svg)](https://travis-ci.org/mtgrosser/pdfunite)
 # Pdfunite
 
 Merge PDF files with Ruby.
