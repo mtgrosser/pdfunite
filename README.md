@@ -38,7 +38,7 @@ File.open('joined.pdf', 'wb') { |f| f << pdf_data }
 pdf_data = Pdfunite.join(objects) { |obj| obj.to_pdf }
 ```
 
-## Configuration
+## Optional configuration
 
 ```ruby
 # Set pdfunite binary (defaults to the binary on PATH)
