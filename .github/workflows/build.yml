@@ -22,4 +22,6 @@ jobs:
       with:
         ruby-version: ${{ matrix.ruby-version }}
         bundler-cache: true
+    - name: Set up libs
+      run: sudo apt-get install -y poppler-utils
     - run: bundle exec rake
