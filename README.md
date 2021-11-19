@@ -36,6 +36,7 @@ File.open('joined.pdf', 'wb') { |f| f << pdf_data }
 
 # Join PDF binary data provided by a collection of objects
 pdf_data = Pdfunite.join(objects) { |obj| obj.to_pdf }
+```
 
 ## Configuration
 
