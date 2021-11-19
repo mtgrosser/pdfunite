@@ -13,6 +13,6 @@ Gem::Specification.new do |spec|
   spec.homepage      = 'https://github.com/mtgrosser/pdfunite'
   spec.license       = 'MIT'
 
-  spec.files         = Dir['{lib}/**/*.rb', 'LICENSE', 'README.md', 'CHANGELOG', 'Rakefile']
+  spec.files         = Dir['{lib}/**/*.rb', 'LICENSE', 'README.md', 'CHANGELOG.md']
   spec.require_paths = ['lib']
 end
