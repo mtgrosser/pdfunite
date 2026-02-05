@@ -23,7 +23,6 @@ end
 require 'rubygems'
 require 'bundler/setup'
 Bundler.require(:default)
-require 'byebug'
 
 require 'minitest/autorun'
 

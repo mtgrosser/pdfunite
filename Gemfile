@@ -4,5 +4,5 @@ gemspec
 
 gem 'rake'
 gem 'simplecov'
-gem 'byebug'
+gem 'cgi'
 gem 'minitest'

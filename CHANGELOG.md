@@ -1,3 +1,9 @@
+## 0.7.0 - Feb 5, 2026
+
+- Force encoding for binary data
+- Update for Ruby 4
+- Add stdgems
+
 ## 0.6.0 - Nov 19, 2021
 
 - Cleanup dependencies

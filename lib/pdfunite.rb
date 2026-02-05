@@ -47,7 +47,7 @@ module Pdfunite
           realpath = if block_given?
             data = yield(arg)
             file = tmpdir.join("#{idx}.pdf")
-            file.open('wb') { |f| f << data }
+            file.binwrite data.force_encoding('BINARY')
             file.realpath
           else
             Pathname.new(arg).realpath
@@ -60,12 +60,12 @@ module Pdfunite
       end
       output
     end
-  
+
     private
   
     def run_command(cmdline)
       logger = Pdfunite.logger || Logger.new(STDOUT)
-      stdout, stderr, status = Open3.capture3(cmdline)
+      _, stderr, status = Open3.capture3(cmdline)
       logger.info "Pdfunite: #{cmdline}"
       raise unless status.success?
       true
